@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* light theme (RGB triplets so Tailwind opacity modifiers work) */
+  --bg: 244 246 252;
+  --fg: 14 18 32;
+  --muted: 88 98 124;
+  --card: 255 255 255;
+  --line: 200 208 228;
+  --electric: 37 99 235;
+  --violet: 124 58 237;
+  --cyan: 8 145 178;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 4 5 10;
+  --fg: 232 236 248;
+  --muted: 148 158 188;
+  --card: 16 20 38;
+  --line: 44 52 84;
+  --electric: 59 130 246;
+  --violet: 168 85 247;
+  --cyan: 34 211 238;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgb(var(--violet) / 0.45);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--cyan));
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ── Utilities ─────────────────────────────── */
+.glass {
+  background: rgb(var(--card) / 0.55);
+  border: 1px solid rgb(var(--line) / 0.7);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 8px 40px -12px rgb(0 0 0 / 0.45), inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, rgb(var(--electric)), rgb(var(--violet)) 45%, rgb(var(--cyan)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradientShift 8s ease-in-out infinite alternate;
+}
+
+.text-glow {
+  filter: drop-shadow(0 0 22px rgb(var(--violet) / 0.45));
+}
+
+@keyframes gradientShift {
+  to {
+    background-position: 100% center;
+  }
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgb(var(--line) / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.35) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+}
+
+.noise::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Custom cursor: only hide the native cursor when the custom one is active */
+html.has-custom-cursor,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor [role="tab"],
+html.has-custom-cursor input,
+html.has-custom-cursor textarea {
+  cursor: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--bg));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--line));
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Print (used by /resume) ───────────────── */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .noise::after {
+    display: none;
+  }
+}
